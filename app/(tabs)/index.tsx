@@ -1,38 +1,16 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text } from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, Text, Dimensions } from "react-native";
 import { View } from "@/components/Themed";
-import fetchTopRatedMovies from "@/api/movies";
-import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import MovieListItem from "@/components/MovieListItem";
+import fetchProductList from "@/api/movies";
 
 export default function TabOneScreen() {
   const {
-    data: movies,
+    data: products,
     isLoading,
     error,
-  } = useQuery({ queryKey: ["movies"], queryFn: fetchTopRatedMovies });
-  // When the network request has completed, the returned data will be cached under the movies key.
+  } = useQuery({ queryKey: ["products"], queryFn: fetchProductList });
 
-/* ------------- useEffect -----------------
-
-  const [movies, setMovies] = useState([])
-  const [isLoading, setIsLoading] = useState(false);
-  const [error , setError] = useState('');
-
-  useEffect (() => {
-    const fetchMovies = async () => {
-      setIsLoading(true)
-      try{
-        const movies = await fetchTopRatedMovies();
-        setMovies(movies);
-        } catch (error) {
-          setError(error);
-        }
-
-     setIsLoading(false)
-    };
-    fetchMovies();
-  }, []);
-*/
   if (isLoading) {
     return <ActivityIndicator />;
   }
@@ -44,11 +22,11 @@ export default function TabOneScreen() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={movies}
+        data={products}
+        numColumns={2}
+        contentContainerStyle={styles.flatlistContentContainer} // Yeni eklenen stil
         renderItem={({ item }) => (
-          <View>
-            <Text>{item.title}</Text>
-          </View>
+          <MovieListItem product={item} />
         )}
       />
     </View>
@@ -58,7 +36,9 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+  },
+  flatlistContentContainer: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
   },
 });
