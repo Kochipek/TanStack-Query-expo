@@ -1,8 +1,7 @@
-const fetchProductList = async () => {
-  const url = 'https://fakestoreapi.com/products';
+export const fetchData = async (url: string) => {
   const options = {
     method: 'GET'
-  }
+  };
 
   try {
     const response = await fetch(url, options);
@@ -13,8 +12,16 @@ const fetchProductList = async () => {
     return json;
   } catch (err) {
     console.error(err);
-    return null; // Hata durumunda null döndürülebilir veya uygun bir işlem yapılabilir.
+    return null;
   }
-}
+};
 
-export default fetchProductList;
+export const fetchProductList = async () => {
+  const url = 'https://fakestoreapi.com/products';
+  return await fetchData(url);
+};
+
+export const fetchProductDetail = async (id: number) => {
+  const url = `https://fakestoreapi.com/products/${id}`;
+  return await fetchData(url);
+};

@@ -2,7 +2,7 @@ import { ActivityIndicator, FlatList, StyleSheet, Text, Dimensions } from "react
 import { View } from "@/components/Themed";
 import { useQuery } from "@tanstack/react-query";
 import ProductListItem from "@/components/ProductListItem";
-import fetchProductList from "@/api/products";
+import {fetchProductList} from "@/api/products";
 
 
 export default function TabOneScreen() {
