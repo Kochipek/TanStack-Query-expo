@@ -1,13 +1,14 @@
 import React from 'react';
 import CustomCard from './CustomCard';
 
-const MovieListItem = ({ product }) => {
+const ProductListItem = ({ product }) => {
   const handlePress = () => {
-   //TODO add to cart
+  console.log("Item added to cart");
   };
 
   return (
     <CustomCard
+      id = {product.id}
       title={product.title}
       imageUri={product.image}
       description={product.description}
@@ -17,4 +18,4 @@ const MovieListItem = ({ product }) => {
   );
 };
 
-export default MovieListItem;
+export default ProductListItem;

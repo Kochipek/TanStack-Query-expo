@@ -1,34 +1,36 @@
-import React from 'react';
-import { StyleSheet, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, Pressable, Dimensions } from 'react-native';
 import { Card, Text, Button, Icon } from '@rneui/themed';
+import { Link } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 const cardWidth = (width - 30) / 2;
 
-const CustomCard = ({ title, imageUri, description, price, onPress }) => {
+const CustomCard = ({ title, imageUri, description, price, onPress, id}) => {
   return (
-    <View style={styles.container}>
-      <Card>
-        <Card.Title numberOfLines={2}>{title}</Card.Title>
-        <Card.Divider />
-        <Card.Image style={styles.image} source={{ uri: imageUri }} />
-        <Text style={styles.description} numberOfLines={4}>
-          {description}
-        </Text>
-        <Button
-          icon={
-            <Icon
-              name="shopping-cart"
-              color="#ffffff"
-              iconStyle={{ marginRight: 10 }}
-            />
-          }
-          buttonStyle={styles.button}
-          title={`${price} $`}
-          onPress={onPress}
-        />
-      </Card>
-    </View>
+      <Link href={`/${id}`} asChild>
+    <Pressable style={styles.container}>
+        <Card>
+          <Card.Title numberOfLines={2}>{title}</Card.Title>
+          <Card.Divider />
+          <Card.Image style={styles.image} source={{ uri: imageUri }} />
+          <Text style={styles.description} numberOfLines={4}>
+            {description}
+          </Text>
+          <Button
+            icon={
+              <Icon
+                name="shopping-cart"
+                color="#ffffff"
+                iconStyle={{ marginRight: 10 }}
+              />
+            }
+            buttonStyle={styles.button}
+            title={`${price} $`}
+            onPress={onPress}
+          />
+        </Card>
+    </Pressable>
+    </Link>
   );
 };
 
