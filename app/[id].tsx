@@ -1,13 +1,12 @@
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
-import { useLocalSearchParams } from 'expo-router'
+import { Stack, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query';
 import { fetchProductDetail } from '@/api/products';
 
 const ProductDetailsPage = () => {
   const {id} = useLocalSearchParams();
   const {data, isLoading, error} = useQuery({
-    // we used id as a queryKey to make sure that the data is cached per product id
     queryKey : ['products', id], 
     queryFn: () => fetchProductDetail(id),
   })
@@ -19,13 +18,90 @@ const ProductDetailsPage = () => {
     return <Text>{error.message}</Text>;
   }
 
+  const handlePress = () => {
+    // Burada butona basıldığında yapılacak işlemleri tanımlayabilirsiniz.
+    console.log("Button pressed!");
+  };
+
   return (
-    <View>
-      <Text>{data.description}</Text>
-    </View>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <Stack.Screen options={{title: data.title}} />
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: data.image }} style={styles.image} />
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.description}>{data.description}</Text>
+          <Text style={styles.price}>{data.price}$</Text>
+          <Text style={styles.category}>{data.category}</Text>
+          {/* TouchableOpacity ile buton eklenmesi */}
+          <TouchableOpacity onPress={handlePress} style={styles.button}>
+            <Text style={styles.buttonText}>Add to Cart</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ScrollView>
+
   )
 }
 
 export default ProductDetailsPage
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    backgroundColor: '#fff',
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  image: {
+    width: 300,
+    height: 400,
+    resizeMode: 'cover',
+  },
+  infoContainer: {
+    paddingHorizontal: 20,
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  description: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  price: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: 'orange',
+  },
+  category: {
+    fontSize: 16,
+    marginBottom: 10,
+    color: '#888',
+  },
+  button: {
+    backgroundColor: 'orange',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+})
