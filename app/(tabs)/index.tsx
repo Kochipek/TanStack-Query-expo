@@ -1,8 +1,9 @@
 import { ActivityIndicator, FlatList, StyleSheet, Text, Dimensions } from "react-native";
 import { View } from "@/components/Themed";
 import { useQuery } from "@tanstack/react-query";
-import MovieListItem from "@/components/MovieListItem";
-import fetchProductList from "@/api/movies";
+import ProductListItem from "@/components/ProductListItem";
+import fetchProductList from "@/api/products";
+
 
 export default function TabOneScreen() {
   const {
@@ -24,9 +25,9 @@ export default function TabOneScreen() {
       <FlatList
         data={products}
         numColumns={2}
-        contentContainerStyle={styles.flatlistContentContainer} // Yeni eklenen stil
+        contentContainerStyle={styles.flatlistContentContainer}
         renderItem={({ item }) => (
-          <MovieListItem product={item} />
+          <ProductListItem product={item} />
         )}
       />
     </View>
@@ -36,6 +37,8 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   flatlistContentContainer: {
     flexGrow: 1,
