@@ -1,8 +1,9 @@
 import { ActivityIndicator, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
 import { Stack, useLocalSearchParams } from 'expo-router'
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { fetchProductDetail } from '@/api/products';
+import { addToCart } from '@/api/cart';
 
 const ProductDetailsPage = () => {
   const {id} = useLocalSearchParams();
@@ -10,6 +11,11 @@ const ProductDetailsPage = () => {
     queryKey : ['products', id], 
     queryFn: () => fetchProductDetail(id),
   })
+
+  const {mutate} = useMutation({
+mutationFn: (quantity: number) => addToCart(id, quantity),
+})
+    
 
   if (isLoading) {
     return <ActivityIndicator />;
@@ -19,8 +25,8 @@ const ProductDetailsPage = () => {
   }
 
   const handlePress = () => {
-    // Burada butona basıldığında yapılacak işlemleri tanımlayabilirsiniz.
-    console.log("Button pressed!");
+    mutate(1);
+    console.log('added to cart');
   };
 
   return (
@@ -35,7 +41,6 @@ const ProductDetailsPage = () => {
           <Text style={styles.description}>{data.description}</Text>
           <Text style={styles.price}>{data.price}$</Text>
           <Text style={styles.category}>{data.category}</Text>
-          {/* TouchableOpacity ile buton eklenmesi */}
           <TouchableOpacity onPress={handlePress} style={styles.button}>
             <Text style={styles.buttonText}>Add to Cart</Text>
           </TouchableOpacity>
