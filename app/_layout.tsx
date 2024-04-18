@@ -9,6 +9,7 @@ import { useColorScheme } from '@/components/useColorScheme';
 
 
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import { useReactQueryDevTools } from '@dev-plugins/react-query';
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  useReactQueryDevTools(queryClient);
 
   return (
     <QueryClientProvider client={queryClient}>
